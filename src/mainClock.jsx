@@ -7,8 +7,9 @@ function MainClock(props) {
     const [sessionTime, setSessionTime] = useState(60 * 25);
     const [breakTime, setBreakTime] = useState(300);
     const [isSession, setIsSession] = useState(true);
-    const [currentBreakTime,setCurrentBreakTime] = useState(300);
-    const [currentSessionTime,setCurrentSessionTime] = useState(60*25);
+    const [currentBreakTime, setCurrentBreakTime] = useState(300);
+    const [currentSessionTime, setCurrentSessionTime] = useState(60 * 25);
+
     const handleRunOrStop = () => {
         setIsStart(!isStart);
     };
@@ -21,29 +22,41 @@ function MainClock(props) {
 
     const handleIncreaseSession = () => {
         if (!isStart) {
-            setSessionTime(prev => prev + 60 - (prev%60));
-            setCurrentSessionTime(sessionTime);
+            setSessionTime((prev) => {
+                const updated = prev + 60 - (prev % 60);
+                setCurrentSessionTime(updated);
+                return updated;
+            });
         }
     };
 
     const handleDecreaseSession = () => {
         if (!isStart && sessionTime > 60) {
-            setSessionTime(prev => prev - 60 -(prev%60));
-            setCurrentSessionTime(sessionTime);
+            setSessionTime((prev) => {
+                const updated = prev - 60 - (prev % 60);
+                setCurrentSessionTime(updated);
+                return updated;
+            });
         }
     };
 
     const handleIncreaseBreak = () => {
         if (!isStart) {
-            setBreakTime(prev => prev + 60 - (prev%60));
-            setCurrentBreakTime(breakTime);
+            setBreakTime((prev) => {
+                const updated = prev + 60 - (prev % 60);
+                setCurrentBreakTime(updated);
+                return updated;
+            });
         }
     };
 
     const handleDecreaseBreak = () => {
         if (!isStart && breakTime > 60) {
-            setBreakTime(prev => prev - 60);
-            setCurrentBreakTime(breakTime);
+            setBreakTime((prev) => {
+                const updated = prev - 60 - (prev % 60);
+                setCurrentBreakTime(updated);
+                return updated;
+            });
         }
     };
 
@@ -100,7 +113,7 @@ function MainClock(props) {
                 </label>
             </div>
             <div className="countdown-container">
-                <div className="display">
+                <div className={(sessionTime <= 60 || breakTime <= 60) ? "display red" : "display"}>
                     <p id="timer-label">{isSession ? 'Session' : 'Break'}</p>
                     <p id="time-left">{isSession ? formatTime(sessionTime) : formatTime(breakTime)}</p>
                 </div>
@@ -110,7 +123,13 @@ function MainClock(props) {
                             {isStart ? 'pause' : 'play_arrow'}
                         </span>
                     </button>
-                    <button onClick={()=>{setBreakTime(300);setSessionTime(60*25);setIsStart(false);setCurrentBreakTime(300),setCurrentSessionTime(25*60)}} id="reset">
+                    <button onClick={() => {
+                        setBreakTime(300);
+                        setSessionTime(60 * 25);
+                        setIsStart(false);
+                        setCurrentBreakTime(300);
+                        setCurrentSessionTime(60 * 25);
+                    }} id="reset">
                         <span className="material-symbols-outlined">restart_alt</span>
                     </button>
                 </div>
@@ -118,4 +137,5 @@ function MainClock(props) {
         </main>
     );
 }
-   export default MainClock
+
+export default MainClock;
