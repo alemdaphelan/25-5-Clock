@@ -1,15 +1,14 @@
-import React from 'react'
+import { useRef } from 'react'
 import {useState} from 'react'
-import { useCallback } from 'react'
 import { useEffect } from 'react'
-function MainClock(props) {
+function MainClock() {
     const [isStart, setIsStart] = useState(false);
     const [sessionTime, setSessionTime] = useState(60 * 25);
     const [breakTime, setBreakTime] = useState(300);
     const [isSession, setIsSession] = useState(true);
     const [currentBreakTime, setCurrentBreakTime] = useState(300);
     const [currentSessionTime, setCurrentSessionTime] = useState(60 * 25);
-
+    const audio = useRef(new Audio("/Tieng-chuong-reo-vao-lop-www_nhacchuongvui_com.mp3"));
     const handleRunOrStop = () => {
         setIsStart(!isStart);
     };
@@ -68,12 +67,18 @@ function MainClock(props) {
                     setSessionTime((prev) => {
                         if (prev > 0) return prev - 1;
                         setIsSession(false);
+                        console.log(audio);
+                        audio.current.play();
+                        setTimeout(()=>setIsSession(false),5000)
                         return breakTime;
                     });
                 } else {
                     setBreakTime((prev) => {
                         if (prev > 0) return prev - 1;
-                        setIsSession(true);
+                        
+                        console.log(audio);
+                        audio.current.play();
+                        setTimeout(()=>setIsSession(true),5000)
                         return sessionTime;
                     });
                 }
